@@ -128,6 +128,7 @@ struct Monitor {
 	int topbar;
 	Client *clients;
 	Client *sel;
+	Client *oldsel;
 	Client *stack;
 	Monitor *next;
 	Window barwin;
@@ -166,6 +167,7 @@ static void detachstack(Client *c);
 static Monitor *dirtomon(int dir);
 static void drawbar(Monitor *m);
 static void drawbars(void);
+static void lastclient(void);
 static void enternotify(XEvent *e);
 static void expose(XEvent *e);
 static void focus(Client *c);
@@ -205,6 +207,7 @@ static void setfocus(Client *c);
 static void setfullscreen(Client *c, int fullscreen);
 static void setlayout(const Arg *arg);
 static void setmfact(const Arg *arg);
+static void resetfacts(void);
 static void setup(void);
 static void showhide(Client *c);
 static void sigchld(int unused);
@@ -842,7 +845,6 @@ focus(Client *c)
 {
 	if (!c || !ISVISIBLE(c))
 		for (c = selmon->stack; c && !ISVISIBLE(c); c = c->snext);
-	/* was if (selmon->sel) */
 	if (selmon->sel && selmon->sel != c)
 		unfocus(selmon->sel, 0);
 	if (c) {
@@ -859,8 +861,18 @@ focus(Client *c)
 		XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
 		XDeleteProperty(dpy, root, netatom[NetActiveWindow]);
 	}
+	selmon->oldsel = selmon->sel;
 	selmon->sel = c;
 	drawbars();
+}
+
+void
+lastclient()
+{
+  if (!selmon->oldsel)
+    return;
+  focus(selmon->oldsel);
+  restack(selmon);
 }
 
 /* there are some broken focus acquiring clients */
@@ -1610,6 +1622,18 @@ setmfact(const Arg *arg)
 		return;
 	selmon->mfact = f;
 	arrange(selmon);
+}
+
+void
+resetfacts()
+{
+  Client *c;
+  for (c = selmon->clients; c; c = c->next)
+      if (ISVISIBLE(c))
+        c->cfact = 1.0;
+  selmon->mfact = .5;
+  arrange(selmon);
+  free(c);
 }
 
 void
