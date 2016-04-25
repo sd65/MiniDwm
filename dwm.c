@@ -114,7 +114,6 @@ typedef struct {
 
 struct Monitor {
 	char ltsymbol[16];
-	char numclients[4];
 	float mfact;
 	int nmaster;
 	int num;
@@ -748,8 +747,9 @@ dirtomon(int dir)
 void
 drawbar(Monitor *m)
 {
-	int x, xx, w, dx;
-	unsigned int i, occ = 0, urg = 0, n = 0, w2;
+	int x, xx, w, ww, dx, cc = 0;
+	unsigned int i, occ = 0, urg = 0, n = 0;
+	char posbuf[10];
 	Client *c;
 
 	dx = (drw->fonts[0]->ascent + drw->fonts[0]->descent + 2) / 4;
@@ -757,6 +757,11 @@ drawbar(Monitor *m)
 	for (c = m->clients; c; c = c->next) {
 		if (ISVISIBLE(c))
 			n++;
+                if(cc <= 0) {
+                  cc--;
+                  if(c == selmon->sel)
+                    cc=-cc;
+                }
 		occ |= c->tags;
 		if (c->isurgent)
 			urg |= c->tags;
@@ -774,10 +779,10 @@ drawbar(Monitor *m)
 	drw_setscheme(drw, &scheme[SchemeNorm]);
 	drw_text(drw, x, 0, w, bh, m->ltsymbol, 0);
 	x += w;
-	w2 = TEXTW(m->numclients);
-	drw_text(drw, x, 0, w2, bh, m->numclients, 0);
-        snprintf(m->numclients, sizeof m->numclients, "[%d]", n);
-	x += w;
+        snprintf(posbuf, LENGTH(posbuf), "[%d/%d]", cc, n);
+        ww = TEXTW(posbuf);
+	drw_text(drw, x, 0, ww, bh, posbuf, 0);
+        x+=ww;
 	xx = x;
 	if (m == selmon) { /* status is only drawn on selected monitor */
 		w = TEXTW(stext);
@@ -867,7 +872,7 @@ focus(Client *c)
 }
 
 void
-lastclient()
+lastclient(void)
 {
   if (!selmon->oldsel)
     return;
@@ -1625,7 +1630,7 @@ setmfact(const Arg *arg)
 }
 
 void
-resetfacts()
+resetfacts(void)
 {
   Client *c;
   for (c = selmon->clients; c; c = c->next)
