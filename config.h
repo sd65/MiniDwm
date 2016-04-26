@@ -46,12 +46,13 @@ static const Layout layouts[] = {
 #define SHIFT ShiftMask
 #define TAGKEYS(KEY,TAG) \
 {  WIN|SHIFT,  KEY,  view,        {.ui  =  1  <<  TAG}  },  \
-{  WIN|CTRL,   KEY,  toggleview,  {.ui  =  1  <<  TAG}  },  \
 {  WIN,        KEY,  tag,         {.ui  =  1  <<  TAG}  },  \
-//  { WIN|CTRL|SHIFT, KEY,      toggletag,      {.ui = 1 << TAG} },
+/* {  WIN|CTRL,   KEY,  toggleview,  {.ui  =  1  <<  TAG}  },  \
+   { WIN|CTRL|SHIFT, KEY,      toggletag,      {.ui = 1 << TAG} }, */
 
 /* commands */
 #define terminalApp "termite", "-e"
+static  const  char  *lockcmd[]               =  {  "slock",         NULL           };
 static  const  char  *termcmd[]               =  {  "termite",         NULL           };
 static  const  char  *webcmd[]                =  {  "firefox",         NULL           };
 static  const  char  *editcmd[]               =  {  terminalApp,        "vim",         NULL           };
@@ -69,6 +70,7 @@ static  const  char  *zoomOutcmd[]            =  {  "xrandr",          "--output
 static Key keys[] = {
   /* modifier                     key        function        argument */
   // Apps
+{  WIN,  XK_l,  spawn,  {.v  =  lockcmd          }  },
 {  WIN,  XK_t,  spawn,  {.v  =  termcmd          }  },
 {  WIN,  XK_w,  spawn,  {.v  =  webcmd           }  },
 {  WIN,  XK_e,  spawn,  {.v  =  editcmd          }  },
@@ -110,7 +112,8 @@ static Key keys[] = {
   TAGKEYS(  XK_eacute,      1)
   TAGKEYS(  XK_quotedbl,    2)
   // Misc
-{  WIN,  XK_q,  quit,  {0}  },
+{  WIN|SHIFT,  XK_q,  quit,  {0}  },
+{  WIN|SHIFT,  XK_r,  restart,  {0}  },
 };
 
 /* button definitions */

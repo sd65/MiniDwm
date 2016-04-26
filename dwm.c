@@ -166,7 +166,8 @@ static void detachstack(Client *c);
 static Monitor *dirtomon(int dir);
 static void drawbar(Monitor *m);
 static void drawbars(void);
-static void lastclient(void);
+static void lastclient(const Arg *arg);
+static void restart(const Arg *arg);
 static void enternotify(XEvent *e);
 static void expose(XEvent *e);
 static void focus(Client *c);
@@ -177,6 +178,7 @@ static int getrootptr(int *x, int *y);
 static long getstate(Window w);
 static int gettextprop(Window w, Atom atom, char *text, unsigned int size);
 static void grabbuttons(Client *c, int focused);
+static void refreshfocus(void);
 static void grabkeys(void);
 static void incnmaster(const Arg *arg);
 static void keypress(XEvent *e);
@@ -206,7 +208,7 @@ static void setfocus(Client *c);
 static void setfullscreen(Client *c, int fullscreen);
 static void setlayout(const Arg *arg);
 static void setmfact(const Arg *arg);
-static void resetfacts(void);
+static void resetfacts(const Arg *arg);
 static void setup(void);
 static void showhide(Client *c);
 static void sigchld(int unused);
@@ -755,12 +757,10 @@ drawbar(Monitor *m)
 	dx = (drw->fonts[0]->ascent + drw->fonts[0]->descent + 2) / 4;
 
 	for (c = m->clients; c; c = c->next) {
-		if (ISVISIBLE(c))
+		if (ISVISIBLE(c)) {
 			n++;
-                if(cc <= 0) {
-                  cc--;
-                  if(c == selmon->sel)
-                    cc=-cc;
+                        if(c == selmon->sel)
+                           cc=n;
                 }
 		occ |= c->tags;
 		if (c->isurgent)
@@ -814,6 +814,14 @@ drawbars(void)
 
 	for (m = mons; m; m = m->next)
 		drawbar(m);
+}
+
+void
+restart(const Arg *arg)
+{
+    char * path = "/usr/local/bin/dwm";
+    char *const margv[] = {path, NULL};
+    execv(margv[0], margv);
 }
 
 void
@@ -872,7 +880,7 @@ focus(Client *c)
 }
 
 void
-lastclient(void)
+lastclient(const Arg *arg)
 {
   if (!selmon->oldsel)
     return;
@@ -1630,7 +1638,7 @@ setmfact(const Arg *arg)
 }
 
 void
-resetfacts(void)
+resetfacts(const Arg *arg)
 {
   Client *c;
   for (c = selmon->clients; c; c = c->next)
@@ -2145,6 +2153,18 @@ view(const Arg *arg)
 		selmon->tagset[selmon->seltags] = arg->ui & TAGMASK;
 	focus(NULL);
 	arrange(selmon);
+        refreshfocus(); 
+}
+
+void 
+refreshfocus(void)
+{
+	int di;
+	unsigned int dui;
+	Window dummy;
+        XQueryPointer(dpy, root, &dummy, &dummy, &di, &di, &di, &di, &dui);
+        focus(wintoclient(dummy));
+        XFlush(dpy);
 }
 
 Client *
