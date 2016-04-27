@@ -178,7 +178,6 @@ static int getrootptr(int *x, int *y);
 static long getstate(Window w);
 static int gettextprop(Window w, Atom atom, char *text, unsigned int size);
 static void grabbuttons(Client *c, int focused);
-static void refreshfocus(void);
 static void grabkeys(void);
 static void incnmaster(const Arg *arg);
 static void keypress(XEvent *e);
@@ -856,8 +855,13 @@ expose(XEvent *e)
 void
 focus(Client *c)
 {
-	if (!c || !ISVISIBLE(c))
-		for (c = selmon->stack; c && !ISVISIBLE(c); c = c->snext);
+	if (!c || !ISVISIBLE(c)) {
+          int di;
+          unsigned int dui;
+          Window dummy;
+          XQueryPointer(dpy, root, &dummy, &dummy, &di, &di, &di, &di, &dui);
+          c=wintoclient(dummy);
+        }
 	if (selmon->sel && selmon->sel != c)
 		unfocus(selmon->sel, 0);
 	if (c) {
@@ -2151,20 +2155,8 @@ view(const Arg *arg)
 	selmon->seltags ^= 1; /* toggle sel tagset */
 	if (arg->ui & TAGMASK)
 		selmon->tagset[selmon->seltags] = arg->ui & TAGMASK;
-	focus(NULL);
 	arrange(selmon);
-        refreshfocus(); 
-}
-
-void 
-refreshfocus(void)
-{
-	int di;
-	unsigned int dui;
-	Window dummy;
-        XQueryPointer(dpy, root, &dummy, &dummy, &di, &di, &di, &di, &dui);
-        focus(wintoclient(dummy));
-        XFlush(dpy);
+	focus(NULL);
 }
 
 Client *
