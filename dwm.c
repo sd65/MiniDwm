@@ -242,7 +242,7 @@ static int xerrorstart(Display *dpy, XErrorEvent *ee);
 static void zoom(const Arg *arg);
 
 /* variables */
-char ** garv;
+char ** gargv;
 static const char broken[] = "broken";
 static char stext[256];
 static int screen;
@@ -511,7 +511,7 @@ cleanup(void)
 		drw_clr_free(scheme[i].bg);
 		drw_clr_free(scheme[i].fg);
 	}
-        free(garv);
+        free(gargv);
 	drw_free(drw);
 	XSync(dpy, False);
 	XSetInputFocus(dpy, PointerRoot, RevertToPointerRoot, CurrentTime);
@@ -820,7 +820,7 @@ drawbars(void)
 void
 restart(const Arg *arg)
 {
-    execv(garv[0], garv);
+    execv(gargv[0], gargv);
 }
 
 void
@@ -2250,7 +2250,7 @@ main(int argc, char *argv[])
 		fputs("warning: no locale support\n", stderr);
 	if (!(dpy = XOpenDisplay(NULL)))
 		die("dwm: cannot open display\n");
-        garv = argv;
+        gargv = argv;
 	checkotherwm();
 	setup();
 	scan();
