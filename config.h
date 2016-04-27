@@ -57,13 +57,13 @@ static  const  char  *termcmd[]               =  {  "termite",         NULL     
 static  const  char  *webcmd[]                =  {  "firefox",         NULL           };
 static  const  char  *editcmd[]               =  {  terminalApp,        "vim",         NULL           };
 static  const  char  *monitorcmd[]            =  {  terminalApp,        "htop",        NULL           };
-static  const  char  *fileExplorercmd[]       =  {  terminalApp,        "ranger",      NULL           };
+static  const  char  *fileExplorercmd[]       =  {  "thunar",      NULL           };
 static  const  char  *audioMutecmd[]          =  {  "pulseaudio-ctl",  "mute",        NULL           };
 static  const  char  *audioInputMutecmd[]     =  {  "pulseaudio-ctl",  "mute-input",  NULL           };
 static  const  char  *audioUpcmd[]            =  {  "pulseaudio-ctl",  "up",          NULL           };
 static  const  char  *audioDowncmd[]          =  {  "pulseaudio-ctl",  "down",        NULL           };
-static  const  char  *brightnessUpcmd[]       =  {  "xbacklight",      "-inc",        "10",          NULL        };
-static  const  char  *brightnessDowncmd[]     =  {  "xbacklight",      "-dec",        "10",          NULL        };
+static  const  char  *brightnessUpcmd[]       =  {  "myBrightness",      "up",   NULL        };
+static  const  char  *brightnessDowncmd[]     =  {  "myBrightness",      "down",    NULL        };
 static  const  char  *zoomIncmd[]             =  {  "xrandr",          "--output",    "eDP1",        "--scale",  ".7x.7",  NULL  };
 static  const  char  *zoomOutcmd[]            =  {  "xrandr",          "--output",    "eDP1",        "--scale",  "1x1",    NULL  };
 
@@ -71,12 +71,12 @@ static Key keys[] = {
   /* modifier                     key        function        argument */
   // Apps
 {  WIN,  XK_l,  spawn,  {.v  =  lockcmd          }  },
+{  WIN,  XK_f,  spawn,  {.v  =  fileExplorercmd          }  },
 {  WIN,  XK_t,  spawn,  {.v  =  termcmd          }  },
 {  WIN,  XK_w,  spawn,  {.v  =  webcmd           }  },
 {  WIN,  XK_e,  spawn,  {.v  =  editcmd          }  },
 {  WIN,  XK_h,  spawn,  {.v  =  monitorcmd       }  },
-{  WIN,  XK_f,  spawn,  {.v  =  fileExplorercmd  }  },
-  // Media Keys
+
 {  0,     XF86XK_AudioMute,          spawn,  {.v  =  audioMutecmd       }  },
 {  CTRL,  XF86XK_AudioMute,          spawn,  {.v  =  audioInputMutecmd  }  },
 {  0,     XF86XK_AudioRaiseVolume,   spawn,  {.v  =  audioUpcmd         }  },
@@ -120,16 +120,23 @@ static Key keys[] = {
 /* click can be ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static Button buttons[] = {
   /* click                event mask      button          function        argument */
-  {  ClkLtSymbol,    0,    Button1,  setlayout,       {0}  },
+  {  ClkTagBar,      0,    Button1,  view,            {0}  },
+  {  ClkTagBar,      WIN,  Button1,  toggleview,       {0}  },
+  {  ClkTagBar,      WIN,  Button2,  toggletag,       {0}  },
+  {  ClkLtSymbol,    0,    Button1,  setlayout,       {.v  =   &layouts[0]}  },
   {  ClkLtSymbol,    0,    Button3,  setlayout,       {.v  =   &layouts[2]}  },
-  {  ClkWinTitle,    0,    Button2,  zoom,            {0}  },
-  {  ClkStatusText,  0,    Button2,  spawn,           {.v  =   termcmd       }   },
   {  ClkClientWin,   WIN,  Button1,  movemouse,       {0}  },
   {  ClkClientWin,   WIN,  Button2,  togglefloating,  {0}  },
   {  ClkClientWin,   WIN,  Button3,  resizemouse,     {0}  },
-  {  ClkTagBar,      0,    Button1,  view,            {0}  },
-  {  ClkTagBar,      0,    Button3,  toggleview,      {0}  },
-  {  ClkTagBar,      WIN,  Button1,  tag,             {0}  },
-  {  ClkTagBar,      WIN,  Button3,  toggletag,       {0}  },
+  {  ClkTagBar,  0,    Button4, shiftview,   {.i  =   -1}},
+  {  ClkTagBar,  0,    Button5, shiftview,   {.i  =   +1}},
+  {  ClkWinTitle,  0,    Button2, killclient,   {0}},
+  {  ClkWinTitle,  0,    Button4, focusstack,   {.i  =   -1}},
+  {  ClkWinTitle,  0,    Button5, focusstack,   {.i  =   +1}},
+  {  ClkStatusText,  0,    Button4,  spawn,           {.v  =   brightnessUpcmd       }   },
+  {  ClkStatusText,  0,    Button5,  spawn,           {.v  =   brightnessDowncmd       }   },
+  {  ClkStatusText,  WIN,    Button4,  spawn,           {.v  =   audioUpcmd       }   },
+  {  ClkStatusText,  WIN,    Button5,  spawn,           {.v  =   audioDowncmd       }   },
+  {  ClkStatusText,  0,    Button2,  spawn,           {.v  =   audioMutecmd       }   },
 };
 
