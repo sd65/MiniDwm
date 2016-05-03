@@ -4,24 +4,26 @@
 #include <X11/XF86keysym.h>
 
 /* appearance */
-#define grey "#444444"
-#define lightGrey "#cccccc"
+#define GREY "#444444"
+#define LIGHTGREY "#cccccc"
+#define MYFONT1  "dejavu sans serif:size=12"
+#define MYFONT2  "dejavu sans serif:size=20"
 static const char *fonts[] = {
-  "-*-dejavu sans mono-medium-r-normal-*-12-*-*-*-*-*-*"
+  MYFONT1
 };
-static const char normbordercolor[] = grey;
-static const char normbgcolor[]     = grey;
-static const char normfgcolor[]     = lightGrey;
-static const char selbordercolor[]  = lightGrey;
-static const char selbgcolor[]      = lightGrey;
-static const char selfgcolor[]      = grey;
+static const char normbordercolor[] = GREY;
+static const char normbgcolor[]     = GREY;
+static const char normfgcolor[]     = LIGHTGREY;
+static const char selbordercolor[]  = LIGHTGREY;
+static const char selbgcolor[]      = LIGHTGREY;
+static const char selfgcolor[]      = GREY;
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3" };
+static const char *tags[] = { "I", "II", "III" };
 
 static const Rule rules[] = {
   { "Gimp",     NULL,       NULL,       0,            1,           -1 },
@@ -52,12 +54,13 @@ static const Layout layouts[] = {
 
 /* commands */
 #define terminalApp "termite", "-e"
+static  const  char  *dmenucmd[]               =  {  "dmenu_run", "-i", "-nb", GREY, "-nf", LIGHTGREY, "-sb", LIGHTGREY, "-sf", GREY, "-fn", MYFONT2, NULL           };
 static  const  char  *lockcmd[]               =  {  "slock",         NULL           };
 static  const  char  *termcmd[]               =  {  "termite",         NULL           };
 static  const  char  *webcmd[]                =  {  "firefox",         NULL           };
 static  const  char  *editcmd[]               =  {  terminalApp,        "vim",         NULL           };
 static  const  char  *monitorcmd[]            =  {  terminalApp,        "htop",        NULL           };
-static  const  char  *fileExplorercmd[]       =  {  "thunar",      NULL           };
+static  const  char  *fileExplorercmd[]       =  {  "pcmanfm",      NULL           };
 static  const  char  *audioMutecmd[]          =  {  "pulseaudio-ctl",  "mute",        NULL           };
 static  const  char  *audioInputMutecmd[]     =  {  "pulseaudio-ctl",  "mute-input",  NULL           };
 static  const  char  *audioUpcmd[]            =  {  "pulseaudio-ctl",  "up",          NULL           };
@@ -70,6 +73,7 @@ static  const  char  *zoomOutcmd[]            =  {  "xrandr",          "--output
 static Key keys[] = {
   /* modifier                     key        function        argument */
   // Apps
+{  WIN,  XK_Escape,  spawn,  {.v  =  dmenucmd          }  },
 {  WIN,  XK_l,  spawn,  {.v  =  lockcmd          }  },
 {  WIN,  XK_f,  spawn,  {.v  =  fileExplorercmd          }  },
 {  WIN,  XK_t,  spawn,  {.v  =  termcmd          }  },
