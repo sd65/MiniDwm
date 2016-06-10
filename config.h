@@ -101,6 +101,8 @@ static Key keys[] = {
 {  WIN|SHIFT,  XK_Down,       setcfact,    {.f  =   -0.25}        },
 {  WIN,        XK_Left,       focusstack,  {.i  =   -1            }   },
 {  WIN,        XK_Right,      focusstack,  {.i  =   +1            }   },
+{  WIN,        XK_c,          centerCurrentClient,  {0}   },
+{  WIN,        XK_x,          togglefloating,  {0}   },
 {  WIN,        XK_i,          incnmaster,  {.i  =   +1            }   },
 {  WIN,        XK_d,          incnmaster,  {.i  =   -1            }   },
 {  WIN,        XK_Return,     zoom,        {0}  },

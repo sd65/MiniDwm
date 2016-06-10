@@ -166,6 +166,8 @@ static void detachstack(Client *c);
 static Monitor *dirtomon(int dir);
 static void drawbar(Monitor *m);
 static void drawbars(void);
+static void centerCurrentClient(const Arg *arg);
+static void centerClient(Client *c);
 static void lastclient(const Arg *arg);
 static void restart(const Arg *arg);
 static void enternotify(XEvent *e);
@@ -1149,10 +1151,10 @@ manage(Window w, XWindowAttributes *wa)
 	updatewmhints(c);
 	XSelectInput(dpy, w, EnterWindowMask|FocusChangeMask|PropertyChangeMask|StructureNotifyMask);
 	grabbuttons(c, 0);
-	if (!c->isfloating)
-		c->isfloating = c->oldstate = trans != None || c->isfixed;
 	if (c->isfloating)
 		XRaiseWindow(dpy, c->win);
+        else
+		c->isfloating = c->oldstate = trans != None || c->isfixed;
 	attach(c);
 	attachstack(c);
 	XChangeProperty(dpy, root, netatom[NetClientList], XA_WINDOW, 32, PropModeAppend,
@@ -1165,6 +1167,21 @@ manage(Window w, XWindowAttributes *wa)
 	arrange(c->mon);
 	XMapWindow(dpy, c->win);
 	focus(c);
+}
+
+void
+centerCurrentClient(const Arg *arg)
+{
+  Client *c = selmon->sel;
+  centerClient(c);
+  arrange(c->mon);
+}
+
+void
+centerClient(Client *c)
+{
+  c->x = (c->mon->mw - WIDTH(c)) / 2;
+  c->y = (c->mon->mh - HEIGHT(c)) / 2;
 }
 
 void
@@ -1818,15 +1835,18 @@ togglebar(const Arg *arg)
 void
 togglefloating(const Arg *arg)
 {
-	if (!selmon->sel)
+  Client *c = selmon->sel;
+
+	if (!c)
 		return;
-	if (selmon->sel->isfullscreen) /* no support for fullscreen windows */
+	if (c->isfullscreen) /* no support for fullscreen windows */
 		return;
-	selmon->sel->isfloating = !selmon->sel->isfloating || selmon->sel->isfixed;
-	if (selmon->sel->isfloating) {
-		selmon->sel->oldbw = selmon->sel->bw;
-		selmon->sel->bw = borderpx;
-		resizeclient(selmon->sel, selmon->wx, selmon->wy, selmon->ww - (2 * selmon->sel->bw), selmon->wh - (2 * selmon->sel->bw));
+	c->isfloating = !c->isfloating || c->isfixed;
+	if (c->isfloating) {
+		c->oldbw = c->bw;
+		c->bw = borderpx;
+		resizeclient(c, c->x, c->y, (c->mon->mw/2), (c->mon->mh/2));
+                centerClient(c);
 	}
 	arrange(selmon);
 }
