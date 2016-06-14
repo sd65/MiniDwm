@@ -6,11 +6,10 @@
 /* appearance */
 #define GREY "#444444"
 #define LIGHTGREY "#cccccc"
-#define MYFONT1  "dejavu sans serif:size=12"
-#define MYFONT2  "dejavu sans serif:size=20"
-static const char *fonts[] = {
-  MYFONT1
-};
+//#define MYFONT1  "-*-courier new-medium-r-normal-*-27-*-*-*-*-*-*-*"
+#define MYFONT1  "dejavu sans mono:size=12"
+#define MYFONT2  "dejavu sans mono:size=30"
+static const char *fonts[] =  { MYFONT1  };
 static const char normbordercolor[] = GREY;
 static const char normbgcolor[]     = GREY;
 static const char normfgcolor[]     = LIGHTGREY;
@@ -39,6 +38,7 @@ static const Layout layouts[] = {
   { "[T]",      tile },    /* first entry is default */
   { "[F]",      NULL },    /* no layout function means floating behavior */
   { "[M]",      monocle },
+  { "[G]",      gaplessgrid },
 };
 
 /* key definitions */
@@ -103,6 +103,7 @@ static Key keys[] = {
 {  WIN,        XK_Right,      focusstack,  {.i  =   +1            }   },
 {  WIN,        XK_c,          centerCurrentClient,  {0}   },
 {  WIN,        XK_x,          togglefloating,  {0}   },
+{  WIN,        XK_g,          setlayout,  {.v = &layouts[3]}   },
 {  WIN,        XK_i,          incnmaster,  {.i  =   +1            }   },
 {  WIN,        XK_d,          incnmaster,  {.i  =   -1            }   },
 {  WIN,        XK_Return,     zoom,        {0}  },
@@ -129,8 +130,6 @@ static Button buttons[] = {
   {  ClkTagBar,      0,    Button1,  view,            {0}  },
   {  ClkTagBar,      WIN,  Button1,  toggleview,       {0}  },
   {  ClkTagBar,      WIN,  Button2,  toggletag,       {0}  },
-  {  ClkLtSymbol,    0,    Button1,  setlayout,       {.v  =   &layouts[0]}  },
-  {  ClkLtSymbol,    0,    Button3,  setlayout,       {.v  =   &layouts[2]}  },
   {  ClkClientWin,   WIN,  Button1,  movemouse,       {0}  },
   {  ClkClientWin,   WIN,  Button2,  togglefloating,  {0}  },
   {  ClkClientWin,   WIN,  Button3,  resizemouse,     {0}  },
