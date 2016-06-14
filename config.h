@@ -48,9 +48,7 @@ static const Layout layouts[] = {
 #define SHIFT ShiftMask
 #define TAGKEYS(KEY,TAG) \
 {  WIN|SHIFT,  KEY,  view,        {.ui  =  1  <<  TAG}  },  \
-{  WIN,        KEY,  tag,         {.ui  =  1  <<  TAG}  },  \
-/* {  WIN|CTRL,   KEY,  toggleview,  {.ui  =  1  <<  TAG}  },  \
-   { WIN|CTRL|SHIFT, KEY,      toggletag,      {.ui = 1 << TAG} }, */
+{  WIN,        KEY,  tag,         {.ui  =  1  <<  TAG}  },
 
 /* commands */
 #define terminalApp "termite", "-e"
@@ -73,54 +71,54 @@ static  const  char  *zoomOutcmd[]            =  {  "xrandr",          "--output
 static Key keys[] = {
   /* modifier                     key        function        argument */
   // Apps
-{  WIN,  XK_Escape,  spawn,  {.v  =  dmenucmd          }  },
-{  WIN,  XK_l,  spawn,  {.v  =  lockcmd          }  },
-{  WIN,  XK_f,  spawn,  {.v  =  fileExplorercmd          }  },
-{  WIN,  XK_t,  spawn,  {.v  =  termcmd          }  },
-{  WIN,  XK_w,  spawn,  {.v  =  webcmd           }  },
-{  WIN,  XK_e,  spawn,  {.v  =  editcmd          }  },
-{  WIN,  XK_h,  spawn,  {.v  =  monitorcmd       }  },
+  {  WIN,  XK_Escape,  spawn,  {.v  =  dmenucmd          }  },
+  {  WIN,  XK_l,  spawn,  {.v  =  lockcmd          }  },
+  {  WIN,  XK_f,  spawn,  {.v  =  fileExplorercmd          }  },
+  {  WIN,  XK_t,  spawn,  {.v  =  termcmd          }  },
+  {  WIN,  XK_w,  spawn,  {.v  =  webcmd           }  },
+  {  WIN,  XK_e,  spawn,  {.v  =  editcmd          }  },
+  {  WIN,  XK_h,  spawn,  {.v  =  monitorcmd       }  },
 
-{  0,     XF86XK_AudioMute,          spawn,  {.v  =  audioMutecmd       }  },
-{  CTRL,  XF86XK_AudioMute,          spawn,  {.v  =  audioInputMutecmd  }  },
-{  0,     XF86XK_AudioRaiseVolume,   spawn,  {.v  =  audioUpcmd         }  },
-{  0,     XF86XK_AudioLowerVolume,   spawn,  {.v  =  audioDowncmd       }  },
-{  0,     XF86XK_MonBrightnessUp,    spawn,  {.v  =  brightnessUpcmd    }  },
-{  0,     XF86XK_MonBrightnessDown,  spawn,  {.v  =  brightnessDowncmd  }  },
-{  WIN,   XK_exclam,                 spawn,  {.v  =  zoomIncmd          }  },
-{  WIN,   XK_m,                      spawn,  {.v  =  zoomOutcmd         }  },
+  {  0,     XF86XK_AudioMute,          spawn,  {.v  =  audioMutecmd       }  },
+  {  CTRL,  XF86XK_AudioMute,          spawn,  {.v  =  audioInputMutecmd  }  },
+  {  0,     XF86XK_AudioRaiseVolume,   spawn,  {.v  =  audioUpcmd         }  },
+  {  0,     XF86XK_AudioLowerVolume,   spawn,  {.v  =  audioDowncmd       }  },
+  {  0,     XF86XK_MonBrightnessUp,    spawn,  {.v  =  brightnessUpcmd    }  },
+  {  0,     XF86XK_MonBrightnessDown,  spawn,  {.v  =  brightnessDowncmd  }  },
+  {  WIN,   XK_exclam,                 spawn,  {.v  =  zoomIncmd          }  },
+  {  WIN,   XK_m,                      spawn,  {.v  =  zoomOutcmd         }  },
   // Windows
-{  CTRL,       XK_space,      killclient,  {0}  },
-{  WIN,        XK_b,          togglebar,   {0}  },
-{  WIN,        XK_Up,         setlayout,   {.v  =   &layouts[2]}  },
-{  WIN,        XK_Down,       setlayout,   {.v  =   &layouts[0]}  },
-{  WIN|SHIFT,  XK_agrave,     resetfacts,  {0}  },
-{  WIN|SHIFT,  XK_Left,       setmfact,    {.f  =   -0.05}        },
-{  WIN|SHIFT,  XK_Right,      setmfact,    {.f  =   +0.05}        },
-{  WIN|SHIFT,  XK_Up,         setcfact,    {.f  =   +0.25}        },
-{  WIN|SHIFT,  XK_Down,       setcfact,    {.f  =   -0.25}        },
-{  WIN,        XK_Left,       focusstack,  {.i  =   -1            }   },
-{  WIN,        XK_Right,      focusstack,  {.i  =   +1            }   },
-{  WIN,        XK_c,          centerCurrentClient,  {0}   },
-{  WIN,        XK_x,          togglefloating,  {0}   },
-{  WIN,        XK_g,          setlayout,  {.v = &layouts[3]}   },
-{  WIN,        XK_i,          incnmaster,  {.i  =   +1            }   },
-{  WIN,        XK_d,          incnmaster,  {.i  =   -1            }   },
-{  WIN,        XK_Return,     zoom,        {0}  },
-{  CTRL|ALT,   XK_Right,      shiftview,   {.i  =   +1}},
-{  CTRL|ALT,   XK_Left,       shiftview,   {.i  =   -1            }   },
-{  WIN,        XK_comma,      focusmon,    {.i  =   -1            }   },
-{  WIN,        XK_semicolon,  focusmon,    {.i  =   +1            }   },
-{  WIN|SHIFT,  XK_comma,      tagmon,      {.i  =   -1            }   },
-{  WIN|SHIFT,  XK_semicolon,  tagmon,      {.i  =   +1            }   },
-{  ALT,        XK_Tab,        lastclient,  {0}  },
+  {  CTRL,       XK_space,      killclient,  {0}  },
+  {  WIN,        XK_b,          togglebar,   {0}  },
+  {  WIN,        XK_Up,         setlayout,   {.v  =   &layouts[2]}  },
+  {  WIN,        XK_Down,       setlayout,   {.v  =   &layouts[0]}  },
+  {  WIN|SHIFT,  XK_agrave,     resetfacts,  {0}  },
+  {  WIN|SHIFT,  XK_Left,       setmfact,    {.f  =   -0.05}        },
+  {  WIN|SHIFT,  XK_Right,      setmfact,    {.f  =   +0.05}        },
+  {  WIN|SHIFT,  XK_Up,         setcfact,    {.f  =   +0.25}        },
+  {  WIN|SHIFT,  XK_Down,       setcfact,    {.f  =   -0.25}        },
+  {  WIN,        XK_Left,       focusstack,  {.i  =   -1            }   },
+  {  WIN,        XK_Right,      focusstack,  {.i  =   +1            }   },
+  {  WIN,        XK_c,          centerCurrentClient,  {0}   },
+  {  WIN,        XK_x,          togglefloating,  {0}   },
+  {  WIN,        XK_g,          setlayout,  {.v = &layouts[3]}   },
+  {  WIN,        XK_i,          incnmaster,  {.i  =   +1            }   },
+  {  WIN,        XK_d,          incnmaster,  {.i  =   -1            }   },
+  {  WIN,        XK_Return,     zoom,        {0}  },
+  {  CTRL|ALT,   XK_Right,      shiftview,   {.i  =   +1}},
+  {  CTRL|ALT,   XK_Left,       shiftview,   {.i  =   -1            }   },
+  {  WIN,        XK_comma,      focusmon,    {.i  =   -1            }   },
+  {  WIN,        XK_semicolon,  focusmon,    {.i  =   +1            }   },
+  {  WIN|SHIFT,  XK_comma,      tagmon,      {.i  =   -1            }   },
+  {  WIN|SHIFT,  XK_semicolon,  tagmon,      {.i  =   +1            }   },
+  {  ALT,        XK_Tab,        lastclient,  {0}  },
   // Tags
   TAGKEYS(  XK_ampersand,   0)
-  TAGKEYS(  XK_eacute,      1)
-  TAGKEYS(  XK_quotedbl,    2)
-  // Misc
-{  WIN|SHIFT,  XK_q,  quit,  {0}  },
-{  WIN|SHIFT,  XK_r,  restart,  {0}  },
+    TAGKEYS(  XK_eacute,      1)
+    TAGKEYS(  XK_quotedbl,    2)
+    // Misc
+    {  WIN|SHIFT,  XK_q,  quit,  {0}  },
+    {  WIN|SHIFT,  XK_r,  restart,  {0}  },
 };
 
 /* button definitions */
