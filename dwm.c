@@ -894,6 +894,8 @@ focus(Client *c)
     Window dummy;
     XQueryPointer(dpy, root, &dummy, &dummy, &di, &di, &di, &di, &dui);
     c=wintoclient(dummy);
+    if (!c)
+      for (c = selmon->stack; c && !ISVISIBLE(c); c = c->snext);
   }
   if (selmon->sel && selmon->sel != c)
     unfocus(selmon->sel, 0);
@@ -1761,7 +1763,7 @@ resetfacts(const Arg *arg)
   for (c = selmon->clients; c; c = c->next)
     if (ISVISIBLE(c))
       c->cfact = 1.0;
-  selmon->mfact = .5;
+  selmon->mfact = selmon->pertag->mfacts[selmon->pertag->curtag] = .5;
   arrange(selmon);
   free(c);
 }
