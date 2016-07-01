@@ -65,8 +65,8 @@ static  const  char  *audioUpcmd[]            =  {  "pulseaudio-ctl",  "up",    
 static  const  char  *audioDowncmd[]          =  {  "pulseaudio-ctl",  "down",        NULL           };
 static  const  char  *brightnessUpcmd[]       =  {  "myBrightness",      "up",   NULL        };
 static  const  char  *brightnessDowncmd[]     =  {  "myBrightness",      "down",    NULL        };
-static  const  char  *zoomIncmd[]             =  {  "xrandr",          "--output",    "eDP1",        "--scale",  ".7x.7",  NULL  };
-static  const  char  *zoomOutcmd[]            =  {  "xrandr",          "--output",    "eDP1",        "--scale",  "1x1",    NULL  };
+static  const  char  *zoomIncmd[]             =  {  "xrandr",          "--output",    "eDP-1",        "--scale",  ".7x.7",  NULL  };
+static  const  char  *zoomOutcmd[]            =  {  "xrandr",          "--output",    "eDP-1",        "--scale",  "1x1",    NULL  };
 
 static Key keys[] = {
   /* modifier                     key        function        argument */
