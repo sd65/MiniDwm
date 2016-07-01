@@ -224,6 +224,7 @@ static void tile(Monitor *);
 static void togglebar(const Arg *arg);
 static void togglefloating(const Arg *arg);
 static void toggletag(const Arg *arg);
+static void shifttag(const Arg *arg);
 static void toggleview(const Arg *arg);
 static void unfocus(Client *c, int setfocus);
 static void unmanage(Client *c, int destroyed);
@@ -644,6 +645,21 @@ shiftview(const Arg *arg) {
       | selmon->tagset[selmon->seltags] << (LENGTH(tags) + arg->i);
 
   view(&shifted);
+}
+
+void
+shifttag(const Arg *arg) {
+  Arg shifted;
+
+  if(arg->i > 0) // left circular shift
+    shifted.ui = (selmon->tagset[selmon->seltags] << arg->i)
+      | (selmon->tagset[selmon->seltags] >> (LENGTH(tags) - arg->i));
+
+  else // right circular shift
+    shifted.ui = selmon->tagset[selmon->seltags] >> (- arg->i)
+      | selmon->tagset[selmon->seltags] << (LENGTH(tags) + arg->i);
+
+  tag(&shifted);
 }
 
   void

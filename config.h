@@ -105,6 +105,8 @@ static Key keys[] = {
   {  WIN,        XK_i,          incnmaster,  {.i  =   +1            }   },
   {  WIN,        XK_d,          incnmaster,  {.i  =   -1            }   },
   {  WIN,        XK_Return,     zoom,        {0}  },
+  {  CTRL|ALT|SHIFT,   XK_Right,      shifttag,   {.i  =   +1}},
+  {  CTRL|ALT|SHIFT,   XK_Left,       shifttag,   {.i  =   -1            }   },
   {  CTRL|ALT,   XK_Right,      shiftview,   {.i  =   +1}},
   {  CTRL|ALT,   XK_Left,       shiftview,   {.i  =   -1            }   },
   {  WIN,        XK_comma,      focusmon,    {.i  =   -1            }   },
